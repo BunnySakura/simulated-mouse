@@ -1,67 +1,40 @@
-"""一个模拟鼠标的按键精灵。
+"""一个模拟鼠标的按键精灵
 
-可以设置按键频率、按键位置，使用键盘热键进行启停。
-
-例程:
-
-foo = SimulateMouse()
-
-foo.get_mouse_position()
-
-foo.mouse_click(100)
+可以设置按键频率、按键位置，使用键盘热键进行启停
 """
-import pyautogui
-import keyboard
+from pynput import keyboard, mouse
 
 
-class SimulateMouse(object):
-    """模拟鼠标操作。
+class SimulateMouse:
+    def __init__(self, logger, click_count: int = 1):
+        """构造函数"""
+        # 创建监听器
+        self._listener = keyboard.Listener(
+            on_press=self._on_press,
+            on_release=self._on_release
+        )
 
-    设置好频率，获取鼠标X、Y坐标，按热键启停。
+        self._mouse = mouse.Controller()
+        self._click_count = click_count
 
-    Attributes:
-        screen_size: 包含屏幕尺寸的元组，两个整数。
-        mouse_position: 包含鼠标坐标的元组，两个整数。
-        frequency: 点击频率。
-    """
+        self._logger = logger
 
-    def __init__(self):
-        """构造函数。"""
-        self.screen_size = ()
-        self.mouse_position = ()
-        self.frequency = 0
+        # 启动监听器
+        self._listener.start()
 
-    def get_screen_size(self):
-        """获取屏幕分辨率。"""
-        self.screen_size += pyautogui.size()
+        # 运行主循环
+        self._listener.join()
 
-    def get_mouse_position(self):
-        """获取鼠标坐标，以左上角为坐标原点。"""
-        self.mouse_position += pyautogui.position()
+    def _on_press(self, key):
+        self._logger(f"{key} pressed\n")
+        if key == keyboard.Key.ctrl_l or key == keyboard.Key.ctrl:
+            self._mouse.click(mouse.Button.left, self._click_count)
 
-    def mouse_click(self, freq: int):
-        """以给定频率执行鼠标左击。
-
-        Args:
-            freq: 频率。
-        """
-        pyautogui.click(self.mouse_position, clicks=freq, )
-
-    def del_data(self):
-        """清空并刷新数据。"""
-        del self.mouse_position, self.screen_size
-        self.screen_size = ()
-        self.mouse_position = ()
+    def _on_release(self, key):
+        self._logger(f"{key} released\n")
+        if key == keyboard.Key.esc:
+            self._listener.stop()
 
 
 if __name__ == '__main__':
-    SM = SimulateMouse()
-    while True:
-        if keyboard.is_pressed('ctrl+alt+1'):
-            SM.get_mouse_position()
-            print("记录坐标：", SM.mouse_position)
-            break
-
-    while not keyboard.is_pressed('ctrl+alt+3'):
-        if keyboard.is_pressed('ctrl+alt+2'):
-            SM.mouse_click(100)
+    SM = SimulateMouse(lambda log: print(log, end=""))

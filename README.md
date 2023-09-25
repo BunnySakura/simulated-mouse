@@ -6,8 +6,8 @@
 
 ## 文件描述
 - `simulate_mouse.py`：提供鼠标模拟类；
-- `login_GUI.py`：绘制激活界面；
-- `main_GUI.py`：绘制程序主界面；
+- `login_window.py`：绘制激活界面；
+- `main_window.py`：绘制程序主界面；
 - `ico.py`：生成ICO图标以调用；
 - `rsa_crypt.py`：调用RSA库验证密钥；
 - `rsa_get_key.py`：调用RSA库获取激活密钥。
