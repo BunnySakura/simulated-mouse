@@ -1,1 +1,0 @@
-pyinstaller.exe -F .\login_GUI.py -n 按键精灵V1.1 -w -i .\ico.ico
