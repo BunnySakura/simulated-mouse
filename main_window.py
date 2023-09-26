@@ -1,9 +1,10 @@
 """主窗口"""
+from icon import icon_png
+from simulate_mouse import SimulateMouse
+
 import threading
 import tkinter as tk
 import tkinter.ttk as ttk
-
-from simulate_mouse import SimulateMouse
 
 
 class MainWindow:
@@ -25,7 +26,7 @@ class MainWindow:
         )  # 设置窗口最小大小
 
         self._root_window.title("按键精灵V2.0.0")
-        self._root_window.iconbitmap("./ico")
+        self._root_window.iconphoto(True, tk.PhotoImage(data=icon_png))
 
         self._output_text = tk.Text()  # 文本框
         self._progress_bar = ttk.Progressbar()  # 进度条

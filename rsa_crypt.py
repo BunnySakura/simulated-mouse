@@ -88,9 +88,9 @@ class RsaEncrypt:
 
 if __name__ == '__main__':
     encrypt = RsaEncrypt()
-    test_text = encrypt.rsa_encrypt("e94370c0-c694-5e7c-aee9-ff894cfaf63b")
+    test_text = encrypt.rsa_encrypt("Hello python!")
     print("Key:", base64.b64encode(test_text))
     print(encrypt.rsa_decrypt(base64.b64encode(test_text)))
-    print(encrypt.rsa_verify("芜湖！", encrypt.rsa_sign("芜湖！")))
+    print(encrypt.rsa_verify("Hello tkinter!", encrypt.rsa_sign("Hello tkinter!")))
     with open("./key", "wb") as key:
         key.write(base64.b64encode(test_text))

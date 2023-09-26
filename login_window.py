@@ -1,6 +1,6 @@
 """激活窗口"""
 from main_window import MainWindow
-import ico
+from icon import icon_png
 from rsa_crypt import RsaEncrypt
 
 import tkinter as tk
@@ -33,7 +33,7 @@ class LoginWindow:
 
         # 初始化窗口内容
         self._root_window.title("未激活")
-        self._root_window.iconbitmap("./ico")
+        self._root_window.iconphoto(True, tk.PhotoImage(data=icon_png))
         tk.Label(
             self._root_window, text="请输入激活码", font=(self._font, self._font_size)
         ).grid(row=0, column=0)
