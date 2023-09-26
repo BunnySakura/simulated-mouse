@@ -1,21 +1,48 @@
-# 按键精灵V1.1
-*模拟鼠标点击，可以设置点击坐标、频率，使用热键启停。*
+# 按键精灵
 
-## 编程思路
-通过激活码激活软件，故调用RSA库处理激活码校验，同时设计激活界面。激活后调用程序主界面，点击开始按钮开始监测热键。按下指定热键进行坐标定位、启动、停止，退出键退出。
+*一个`Tkinter`的demo，用于学习`Tkinter`的布局方法以及简单的`GUI`程序设计。*
+
+## 程序逻辑
+
+1. 通过**RSA加密算法**实现登陆窗口的激活码设计，激活后销毁所有控件进入主界面。
+2. 在主界面点击**开始**按钮实现后台监听按键，并在触发`Ctrl`时在指针位置模拟鼠标左键点击；触发`Esc`时退出按键监听。
+3. 主界面点击**退出**按钮，退出程序。
 
 ## 文件描述
-- `simulate_mouse.py`：提供鼠标模拟类；
-- `login_window.py`：绘制激活界面；
-- `main_window.py`：绘制程序主界面；
-- `ico.py`：生成ICO图标以调用；
-- `rsa_crypt.py`：调用RSA库验证密钥；
-- `rsa_get_key.py`：调用RSA库获取激活密钥。
 
-## 打包指令
-```bash
-pyinstaller.exe -F .\login_GUI.py -n 按键精灵V1.1 -w -i .\ico.ico
+- `simulate_mouse.py`: 监听按键并模拟键鼠
+- `login_window.py`:绘制登陆激活界面
+- `main_window.py`:绘制主界面
+- `icon.py`: 将图标嵌入程序
+- `rsa_crypt.py`: 调用RSA库验证密钥
+
+## 安装依赖
+
+```shell
+pip install -r requirements.txt
 ```
 
-## 其他
-**已打包激活功能为单独的类，可以单独使用。**
+## 打包
+
+- `pyinstaller`
+    - 安装：
+      ```shell
+      pip install pyinstaller
+      ```
+
+    - 打包：
+      ```shell
+      pyinstaller --clean -F main_window.py -w -i icon.ico -n 按键精灵
+      ```
+
+- `nuitka`
+    - 安装：
+      ```shell
+      pip install nuitka
+      pip install zstandard
+      ```
+
+    - 打包：
+      ```shell
+      python -m nuitka --standalone --show-memory --show-progress --follow-import-to=need --enable-plugin=tk-inter --output-dir=output --windows-disable-console --windows-icon-from-ico=icon.ico --lto=yes --onefile -o 按键精灵 main_window.py
+      ```
